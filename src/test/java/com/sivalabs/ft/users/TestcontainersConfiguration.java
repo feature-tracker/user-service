@@ -20,5 +20,4 @@ public class TestcontainersConfiguration {
     PostgreSQLContainer<?> postgresContainer() {
         return postgres;
     }
-
 }

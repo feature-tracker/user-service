@@ -11,11 +11,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotEmpty;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -27,7 +26,6 @@ class UserController {
     UserController(UserService userService) {
         this.userService = userService;
     }
-
 
     @GetMapping("")
     @Operation(
@@ -43,20 +41,12 @@ class UserController {
                                         array = @ArraySchema(schema = @Schema(implementation = UserDto.class))))
             })
     List<UserDto> getUsers() {
-        return userService.findAllUsers().stream()
-                .map(this::toUserDto)
-                .toList();
+        return userService.findAllUsers().stream().map(this::toUserDto).toList();
     }
 
     private UserDto toUserDto(User user) {
-        return new UserDto(
-                user.getUuid(),
-                user.getEmail(),
-                user.getFullName(),
-                user.getRole()
-        );
+        return new UserDto(user.getUuid(), user.getEmail(), user.getFullName(), user.getRole());
     }
-
 
     @PutMapping("/{uuid}")
     @Operation(
@@ -77,5 +67,4 @@ class UserController {
             @NotEmpty(message = "Email is required") String email,
             @NotEmpty(message = "Full name is required") String fullName,
             @NotEmpty(message = "Role is required") String role) {}
-
 }

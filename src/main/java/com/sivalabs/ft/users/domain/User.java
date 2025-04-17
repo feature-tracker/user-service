@@ -5,16 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import java.time.Instant;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
@@ -45,8 +41,7 @@ public class User {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    public User() {
-    }
+    public User() {}
 
     public User(String uuid, String email, String fullName, String role) {
         this.uuid = uuid;

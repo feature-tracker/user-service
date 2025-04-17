@@ -30,8 +30,7 @@ class OpenAPIConfig {
                 .license(license);
         Server server = new Server().url("http://localhost:8084").description("UserService Server URL");
 
-        List<Tag> tags = List.of(
-                new Tag().name("User API").description("API endpoints to manage users"));
+        List<Tag> tags = List.of(new Tag().name("User API").description("API endpoints to manage users"));
         return new OpenAPI()
                 .info(info)
                 .addSecurityItem(new SecurityRequirement().addList("Authorization"))
