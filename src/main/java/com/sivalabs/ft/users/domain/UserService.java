@@ -1,30 +1,34 @@
 package com.sivalabs.ft.users.domain;
 
+import com.sivalabs.ft.users.ApplicationProperties;
 import java.util.List;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
 public class UserService {
-    private final UserRepository userRepository;
+    private final Keycloak keycloak;
+    private final ApplicationProperties properties;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Transactional
-    public Long createOrUpdateUser(SyncUserCommand cmd) {
-        var user = userRepository.findByUuid(cmd.uuid()).orElse(new User());
-        user.setUuid(cmd.uuid());
-        user.setEmail(cmd.email());
-        user.setFullName(cmd.fullName());
-        user.setRole(cmd.role());
-        userRepository.save(user);
-        return user.getId();
+    public UserService(Keycloak keycloak, ApplicationProperties properties) {
+        this.keycloak = keycloak;
+        this.properties = properties;
     }
 
     public List<User> findAllUsers() {
-        return userRepository.findAll();
+        RealmResource realm = keycloak.realm(properties.realmName());
+        boolean emailVerified = true;
+        List<UserRepresentation> users =
+                realm.users().search(null, null, null, null, emailVerified, null, null, null, true);
+        return users.stream()
+                .map(u -> new User(
+                        u.getId(),
+                        u.getUsername(),
+                        u.getEmail(),
+                        u.getFirstName() + ' ' + u.getLastName(),
+                        "ROLE_USER"))
+                .toList();
     }
 }
