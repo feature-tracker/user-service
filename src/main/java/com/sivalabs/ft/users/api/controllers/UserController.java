@@ -1,6 +1,7 @@
 package com.sivalabs.ft.users.api.controllers;
 
 import com.sivalabs.ft.users.api.dtos.UserDto;
+import com.sivalabs.ft.users.domain.KeycloakService;
 import com.sivalabs.ft.users.domain.SyncUserCommand;
 import com.sivalabs.ft.users.domain.User;
 import com.sivalabs.ft.users.domain.UserService;
@@ -22,9 +23,11 @@ import org.springframework.web.bind.annotation.*;
 class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
+    private final KeycloakService keycloakService;
 
-    UserController(UserService userService) {
+    UserController(UserService userService, KeycloakService keycloakService) {
         this.userService = userService;
+        this.keycloakService = keycloakService;
     }
 
     @GetMapping("")
@@ -41,7 +44,7 @@ class UserController {
                                         array = @ArraySchema(schema = @Schema(implementation = UserDto.class))))
             })
     List<UserDto> getUsers() {
-        return userService.findAllUsers().stream().map(this::toUserDto).toList();
+        return keycloakService.findAllUsers().stream().map(this::toUserDto).toList();
     }
 
     private UserDto toUserDto(User user) {
