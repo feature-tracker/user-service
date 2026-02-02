@@ -18,7 +18,7 @@
     <properties>
         <java.version>25</java.version>
         <spring-cloud.version>2025.0.1</spring-cloud.version>
-        <springdoc.version>2.8.13</springdoc.version>
+        <springdoc.version>2.8.15</springdoc.version>
         <testcontainers.version>2.0.3</testcontainers.version>
         <keycloak-admin-client.version>26.0.6</keycloak-admin-client.version>
         <spotless-maven-plugin.version>3.0.0</spotless-maven-plugin.version>
