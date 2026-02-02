@@ -8,9 +8,14 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public record OpenAPIProperties(
         @DefaultValue("UserService API") String title,
-        @DefaultValue("UserService API Swagger Documentation") String description,
+
+        @DefaultValue("UserService API Swagger Documentation")
+        String description,
+
         @DefaultValue("v1.0.0") String version,
         Contact contact) {
 
-    public record Contact(@DefaultValue("SivaLabs") String name, @DefaultValue("support@sivalabs.in") String email) {}
+    public record Contact(
+            @DefaultValue("SivaLabs") String name,
+            @DefaultValue("support@sivalabs.in") String email) {}
 }
